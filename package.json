@@ -1,0 +1,53 @@
+{
+  "name": "procurement-vendor-management-platform",
+  "version": "1.0.0",
+  "description": "Enterprise-grade procurement & vendor management platform — Node.js/Express/SQLite/OData-style REST API with full-stack dashboard",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js",
+    "dev": "node --watch index.js",
+    "seed": "node db/seed.js",
+    "test": "jest --runInBand --forceExit --testTimeout=30000",
+    "test:coverage": "jest --runInBand --forceExit --coverage"
+  },
+  "keywords": [
+    "procurement",
+    "vendor-management",
+    "erp",
+    "purchase-orders",
+    "invoicing",
+    "express",
+    "node",
+    "rest-api"
+  ],
+  "author": "Prajwal Devaraj",
+  "license": "MIT",
+  "dependencies": {
+    "bcryptjs": "^3.0.3",
+    "cors": "^2.8.6",
+    "dotenv": "^17.4.2",
+    "express": "^5.2.1",
+    "express-rate-limit": "^8.5.2",
+    "helmet": "^8.2.0",
+    "jsonwebtoken": "^9.0.3",
+    "morgan": "^1.11.0",
+    "pdfkit": "^0.19.1",
+    "sql.js": "^1.14.1",
+    "uuid": "^8.3.2"
+  },
+  "devDependencies": {
+    "jest": "^30.4.2",
+    "supertest": "^7.2.2"
+  },
+  "jest": {
+    "testEnvironment": "node",
+    "testMatch": [
+      "**/test/**/*.test.js"
+    ],
+    "collectCoverageFrom": [
+      "srv/**/*.js",
+      "db/**/*.js",
+      "!db/seed.js"
+    ]
+  }
+}
