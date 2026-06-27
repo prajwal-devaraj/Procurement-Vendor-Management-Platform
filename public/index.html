@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Procurement &amp; Vendor Management Platform</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:opsz,wght@8..60,400;8..60,600;8..60,700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/css/styles.css">
+</head>
+<body>
+
+<!-- ===================== AUTH SCREEN ===================== -->
+<div id="authScreen" class="auth-screen">
+  <div class="auth-card">
+    <div class="auth-brand">
+      <span class="auth-mark">PV</span>
+      <div>
+        <h1>Procurement &amp; Vendor<br>Management Platform</h1>
+        <p class="auth-sub">Vendor onboarding · approvals · purchase orders · invoicing · payments</p>
+      </div>
+    </div>
+
+    <div class="auth-tabs">
+      <button class="auth-tab active" data-tab="login">Sign in</button>
+      <button class="auth-tab" data-tab="register">Create account</button>
+    </div>
+
+    <form id="loginForm" class="auth-form">
+      <label>Email<input type="email" id="loginEmail" required placeholder="you@company.com"></label>
+      <label>Password<input type="password" id="loginPassword" required placeholder="••••••••"></label>
+      <button type="submit" class="btn btn-primary btn-block">Sign in</button>
+      <p class="auth-error" id="loginError"></p>
+    </form>
+
+    <form id="registerForm" class="auth-form hidden">
+      <label>Full name<input type="text" id="regName" required placeholder="Eddie Employee"></label>
+      <label>Email<input type="email" id="regEmail" required placeholder="you@company.com"></label>
+      <label>Password<input type="password" id="regPassword" required placeholder="At least 6 characters" minlength="6"></label>
+      <label>Role
+        <select id="regRole" required>
+          <option value="Employee">Employee</option>
+          <option value="Manager">Manager</option>
+          <option value="Finance">Finance</option>
+          <option value="ProcurementAdmin">Procurement Admin</option>
+          <option value="Vendor">Vendor</option>
+          <option value="SystemAdmin">System Admin</option>
+        </select>
+      </label>
+      <label>Department <span class="optional">(optional)</span><input type="text" id="regDept" placeholder="Engineering"></label>
+      <button type="submit" class="btn btn-primary btn-block">Create account</button>
+      <p class="auth-error" id="registerError"></p>
+    </form>
+
+    <p class="auth-hint">Seed demo logins: <code>admin@demo.com</code>, <code>procurement@demo.com</code>, <code>manager@demo.com</code>, <code>finance@demo.com</code>, <code>employee@demo.com</code>, <code>vendor@demo.com</code> — password <code>demo1234</code></p>
+  </div>
+</div>
+
+<!-- ===================== APP SHELL ===================== -->
+<div id="appShell" class="app-shell hidden">
+
+  <aside class="sidebar">
+    <div class="sidebar-brand">
+      <span class="auth-mark small">PV</span>
+      <span class="sidebar-brand-text">Procurement<br>Platform</span>
+    </div>
+
+    <nav class="sidebar-nav" id="sidebarNav">
+      <button class="nav-item active" data-view="dashboard"><span class="nav-dot"></span>Dashboard</button>
+      <button class="nav-item" data-view="vendors"><span class="nav-dot"></span>Vendors</button>
+      <button class="nav-item" data-view="requests"><span class="nav-dot"></span>Purchase Requests</button>
+      <button class="nav-item" data-view="orders"><span class="nav-dot"></span>Purchase Orders</button>
+      <button class="nav-item" data-view="invoices"><span class="nav-dot"></span>Invoices</button>
+      <button class="nav-item" data-view="payments"><span class="nav-dot"></span>Payments</button>
+      <button class="nav-item" data-view="audit"><span class="nav-dot"></span>Audit Log</button>
+    </nav>
+
+    <div class="sidebar-footer">
+      <div class="user-chip">
+        <span class="user-avatar" id="userAvatar">?</span>
+        <div class="user-meta">
+          <span class="user-name" id="userName">—</span>
+          <span class="user-role" id="userRole">—</span>
+        </div>
+      </div>
+      <button id="logoutBtn" class="btn btn-ghost btn-block">Sign out</button>
+    </div>
+  </aside>
+
+  <main class="main">
+    <header class="topbar">
+      <h2 id="viewTitle">Dashboard</h2>
+      <div class="topbar-actions" id="topbarActions"></div>
+    </header>
+
+    <div class="view-container" id="viewContainer">
+      <!-- views injected by app.js -->
+    </div>
+  </main>
+</div>
+
+<!-- ===================== MODAL ===================== -->
+<div id="modalBackdrop" class="modal-backdrop hidden">
+  <div class="modal" id="modal"></div>
+</div>
+
+<!-- ===================== TOAST ===================== -->
+<div id="toastContainer" class="toast-container"></div>
+
+<script src="/js/api.js"></script>
+<script src="/js/app.js"></script>
+<script src="/js/views/dashboard.js"></script>
+<script src="/js/views/vendors.js"></script>
+<script src="/js/views/requests.js"></script>
+<script src="/js/views/orders.js"></script>
+<script src="/js/views/invoices.js"></script>
+<script src="/js/views/payments.js"></script>
+<script src="/js/views/audit.js"></script>
+<script>
+  // Re-run boot now that view renderers are registered (app.js booted before
+  // view modules loaded, so the initial navigateTo call needs a kick).
+  if (State.token && State.user) navigateTo(State.currentView);
+</script>
+</body>
+</html>
