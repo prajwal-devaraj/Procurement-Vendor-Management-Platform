@@ -1,8 +1,8 @@
 # Procurement & Vendor Management Platform
 
-A full-stack procurement system I built to understand how ERP-style business workflows actually get implemented — vendor onboarding, multi-stage purchase approvals, PO generation, invoice matching, payment tracking, and a real-time analytics dashboard.
+A full-stack procurement system I built to understand how ERP-style business workflows actually get implemented - vendor onboarding, multi-stage purchase approvals, PO generation, invoice matching, payment tracking, and a real-time analytics dashboard.
 
-The backend is Node.js/Express with SQLite (via sql.js). The frontend is a vanilla JS SPA served as static files — no React, no bundler, just modules and fetch. Docker + GitHub Actions CI included.
+The backend is Node.js/Express with SQLite (via sql.js). The frontend is a vanilla JS SPA served as static files - no React, no bundler, just modules and fetch. Docker + GitHub Actions CI included.
 
 ---
 
