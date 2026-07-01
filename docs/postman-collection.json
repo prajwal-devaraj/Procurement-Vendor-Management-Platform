@@ -1,0 +1,259 @@
+{
+  "info": {
+    "name": "Procurement & Vendor Management Platform",
+    "description": "REST API for vendor onboarding, purchase requests, approvals, purchase orders, invoices, and payments.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    { "key": "baseUrl", "value": "http://localhost:4000/api" },
+    { "key": "token", "value": "" },
+    { "key": "vendorId", "value": "" },
+    { "key": "prId", "value": "" },
+    { "key": "poId", "value": "" },
+    { "key": "invoiceId", "value": "" },
+    { "key": "paymentId", "value": "" }
+  ],
+  "item": [
+    {
+      "name": "Auth",
+      "item": [
+        {
+          "name": "Register",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "url": "{{baseUrl}}/auth/register",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Priya Procurement\",\n  \"email\": \"procurement@demo.com\",\n  \"password\": \"demo1234\",\n  \"role\": \"ProcurementAdmin\"\n}"
+            }
+          }
+        },
+        {
+          "name": "Login",
+          "event": [{
+            "listen": "test",
+            "script": {
+              "exec": ["const data = pm.response.json(); pm.collectionVariables.set('token', data.token);"]
+            }
+          }],
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "url": "{{baseUrl}}/auth/login",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"procurement@demo.com\",\n  \"password\": \"demo1234\"\n}"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Vendors",
+      "item": [
+        {
+          "name": "List Vendors",
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }],
+            "url": "{{baseUrl}}/vendors"
+          }
+        },
+        {
+          "name": "Create Vendor",
+          "event": [{
+            "listen": "test",
+            "script": { "exec": ["const data = pm.response.json(); pm.collectionVariables.set('vendorId', data.id);"] }
+          }],
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{token}}" },
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "url": "{{baseUrl}}/vendors",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Acme Office Supplies\",\n  \"category\": \"Office Equipment\",\n  \"contactEmail\": \"sales@acme.com\",\n  \"country\": \"USA\"\n}"
+            }
+          }
+        },
+        {
+          "name": "Approve Vendor",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{token}}" },
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "url": "{{baseUrl}}/vendors/{{vendorId}}/status",
+            "body": { "mode": "raw", "raw": "{\n  \"status\": \"Active\"\n}" }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Purchase Requests",
+      "item": [
+        {
+          "name": "Create Purchase Request",
+          "event": [{
+            "listen": "test",
+            "script": { "exec": ["const data = pm.response.json(); pm.collectionVariables.set('prId', data.id);"] }
+          }],
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{token}}" },
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "url": "{{baseUrl}}/purchaseRequests",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"department\": \"Engineering\",\n  \"justification\": \"New laptops\",\n  \"items\": [{ \"itemName\": \"Laptop\", \"quantity\": 5, \"estimatedCost\": 1200 }]\n}"
+            }
+          }
+        },
+        {
+          "name": "Submit Purchase Request",
+          "request": {
+            "method": "PATCH",
+            "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }],
+            "url": "{{baseUrl}}/purchaseRequests/{{prId}}/submit"
+          }
+        },
+        {
+          "name": "Approve (Manager or Finance, depending on token)",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{token}}" },
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "url": "{{baseUrl}}/purchaseRequests/{{prId}}/approve",
+            "body": { "mode": "raw", "raw": "{\n  \"comment\": \"Approved\"\n}" }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Purchase Orders",
+      "item": [
+        {
+          "name": "Generate PO from Approved PR",
+          "event": [{
+            "listen": "test",
+            "script": { "exec": ["const data = pm.response.json(); pm.collectionVariables.set('poId', data.id);"] }
+          }],
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{token}}" },
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "url": "{{baseUrl}}/purchaseOrders",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"requestId\": \"{{prId}}\",\n  \"vendorId\": \"{{vendorId}}\"\n}"
+            }
+          }
+        },
+        {
+          "name": "Download PO PDF",
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }],
+            "url": "{{baseUrl}}/purchaseOrders/{{poId}}/pdf"
+          }
+        }
+      ]
+    },
+    {
+      "name": "Invoices & Payments",
+      "item": [
+        {
+          "name": "Submit Invoice",
+          "event": [{
+            "listen": "test",
+            "script": { "exec": ["const data = pm.response.json(); pm.collectionVariables.set('invoiceId', data.id);"] }
+          }],
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{token}}" },
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "url": "{{baseUrl}}/invoices",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"poId\": \"{{poId}}\",\n  \"amount\": 6000,\n  \"taxAmount\": 0\n}"
+            }
+          }
+        },
+        {
+          "name": "Approve Invoice (Finance)",
+          "event": [{
+            "listen": "test",
+            "script": { "exec": ["const data = pm.response.json(); pm.collectionVariables.set('paymentId', data.payment.id);"] }
+          }],
+          "request": {
+            "method": "PATCH",
+            "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }],
+            "url": "{{baseUrl}}/invoices/{{invoiceId}}/approve"
+          }
+        },
+        {
+          "name": "Mark Payment Paid (Finance)",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{token}}" },
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "url": "{{baseUrl}}/payments/{{paymentId}}/pay",
+            "body": { "mode": "raw", "raw": "{\n  \"paymentMethod\": \"Wire Transfer\",\n  \"transactionReference\": \"TXN-001\"\n}" }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Analytics",
+      "item": [
+        {
+          "name": "Dashboard Summary",
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }],
+            "url": "{{baseUrl}}/analytics/summary"
+          }
+        },
+        {
+          "name": "Vendor Performance",
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }],
+            "url": "{{baseUrl}}/analytics/vendor-performance"
+          }
+        },
+        {
+          "name": "Monthly Spend",
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }],
+            "url": "{{baseUrl}}/analytics/monthly-spend"
+          }
+        }
+      ]
+    },
+    {
+      "name": "Health",
+      "item": [
+        {
+          "name": "Health Check",
+          "request": { "method": "GET", "url": "{{baseUrl}}/health" }
+        }
+      ]
+    }
+  ]
+}
