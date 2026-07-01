@@ -173,14 +173,11 @@ GET   /api/health
 
 ---
 
-## Resume bullets
 
-- Built a full-stack enterprise procurement platform with Node.js/Express, covering vendor onboarding, multi-stage approvals, PO generation, invoice-to-PO matching, payment tracking, and analytics dashboards
-- Implemented a role-based approval workflow (Employee → Manager → Finance → ProcurementAdmin) with JWT auth, bcrypt password hashing, and a full audit log on every action
-- Designed invoice auto-matching logic with a configurable tolerance band and mismatch flagging, and overdue payment detection across the payment lifecycle
-- Wrote 83 Jest integration tests using Supertest with isolated SQLite instances per test suite; containerized with a multi-stage Dockerfile that runs tests as part of the build
-- Built a vanilla JS analytics dashboard with KPI cards, spend charts, vendor performance rankings, and approval bottleneck analysis — no frontend framework or build step
+Prajwal Devaraj 
 
----
+[github.com/prajwal-devaraj](https://github.com/prajwal-devaraj) 
 
-Prajwal Devaraj — [github.com/prajwal-devaraj](https://github.com/prajwal-devaraj) · [linkedin.com/in/prajwaldevaraj](https://linkedin.com/in/prajwaldevaraj) · [prajwal-devaraj.github.io/PrajwalDevaraj_Portfolio](https://prajwal-devaraj.github.io/PrajwalDevaraj_Portfolio)
+[linkedin.com/in/prajwaldevaraj](https://linkedin.com/in/prajwaldevaraj) 
+
+[prajwal-devaraj.github.io/PrajwalDevaraj_Portfolio](https://prajwal-devaraj.github.io/PrajwalDevaraj_Portfolio)
